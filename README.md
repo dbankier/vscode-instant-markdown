@@ -2,6 +2,8 @@
 
 > Simply, edit markdown documents in vscode and instantly preview it in your browser.
 
+![screencast](./vscode-instant-markdown.gif)
+
 Uses [instant-markdown-d](https://github.com/suan/instant-markdown-d).
 
 ## Installation
