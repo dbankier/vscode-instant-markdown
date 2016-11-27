@@ -3,9 +3,20 @@
 var vscode = require('vscode');
 var Promise = require('bluebird');
 var request = Promise.promisify(require("request"));
-var shell = require("shelljs");
 var path = require('path');
+var open = require('open')
 
+
+
+var spawn = require('child_process').spawn;
+var shell = function(cmd,args,props) {
+  if (process.platform === 'win32') {
+    args = ['/c',cmd].concat(args);
+    cmd = process.env.comspec;
+  }
+  return spawn(cmd,args,props);
+
+}
 
 function activate(context) {
   var instantMarkdown = new InstantMarkdown();
@@ -18,15 +29,23 @@ function InstantMarkdown() {
   var started = false;
   var self = this;
   this.initialise = function(callback) {
-    console.log("Initialising");
-    var server = shell.exec(path.join(__dirname,"node_modules","instant-markdown-d","instant-markdown-d"), {async: true})
+    var server = shell('node', [path.join(__dirname,"node_modules","instant-markdown-d","instant-markdown-d")])
     server.stdout.on('data', function(data) {
-      if (!started && (data.toString().indexOf("connection established!") !== -1 || data.toString().indexOf("EADDRINUSE") !== -1)) {
+      console.log(">>>" + data.toString());
+      if (!started && (data.toString().indexOf("connection established!") !== -1 )) {
         callback();
         started = true;
       }
-
-      console.log(">>>" + data);
+    });
+    server.stderr.on('data', function(data) {
+      console.log(">>> " + data.toString())
+      if (!started && (data.toString().indexOf("EADDRINUSE") !== -1)) {
+        callback();
+        started = true;
+      }
+    })
+    server.on('exit', function(data) {
+      console.log("!!> " + data.toString());
     });
   };
   this.update = function() {
@@ -40,7 +59,6 @@ function InstantMarkdown() {
         if (e.code === "ECONNREFUSED") {
           self.initialise();
         }
-        console.log(e)
       });
     }
     if (started) {
@@ -72,7 +90,15 @@ function InstantMarkdownController(md) {
       md.close();
     }
   }
-  vscode.window.onDidChangeActiveTextEditor(update, this, subscriptions);
+  vscode.window.onDidChangeActiveTextEditor(function() {
+    var editor = vscode.window.activeTextEditor;
+    if (!editor) { return; }
+    var doc = editor.document;
+    if (doc.languageId === "markdown" && process.platform === 'win32') {
+      vscode.window.showInformationMessage("Open your browser to http://localhost:8090")
+    }
+    update()
+  }, this, subscriptions);
   vscode.window.onDidChangeTextEditorSelection(update, this, subscriptions);
   md.update();
 }

@@ -2,10 +2,10 @@
   "name": "vscode-instant-markdown",
   "displayName": "Instant Markdown",
   "description": "Instant previews of your markdown files as you type.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "dbankier",
   "homepage": "https://github.com/dbankier/vscode-instant-markdown/blob/master/README.md",
-   "repository": {
+  "repository": {
     "type": "git",
     "url": "https://github.com/ziyasal/vscode-instant-markdown.git"
   },
@@ -24,7 +24,8 @@
   },
   "dependencies": {
     "bluebird": "^3.0.6",
-    "instant-markdown-d": "0.1.0",
+    "instant-markdown-d": "git://github.com/suan/instant-markdown-d.git#commit-ish",
+    "open": "0.0.5",
     "request": "^2.67.0",
     "shelljs": "^0.5.3"
   }
