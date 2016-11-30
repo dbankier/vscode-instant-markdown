@@ -90,15 +90,7 @@ function InstantMarkdownController(md) {
       md.close();
     }
   }
-  vscode.window.onDidChangeActiveTextEditor(function() {
-    var editor = vscode.window.activeTextEditor;
-    if (!editor) { return; }
-    var doc = editor.document;
-    if (doc.languageId === "markdown" && process.platform === 'win32') {
-      vscode.window.showInformationMessage("Open your browser to http://localhost:8090")
-    }
-    update()
-  }, this, subscriptions);
+  vscode.window.onDidChangeActiveTextEditor(update, this, subscriptions);
   vscode.window.onDidChangeTextEditorSelection(update, this, subscriptions);
   md.update();
 }
