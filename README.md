@@ -33,8 +33,7 @@ npm install
 
 When you edit a markdown document it should instantly preview in your browser with changes applied as you type.
 
-***PLEASE NOTE*** - on OSX the browser will be automatically launched, whereas on Windows you will need to open
-your browser manually to `http://localhost:8090`.
+You browser should automatically open to `http://localhost:3000`
 
 
 ## License
