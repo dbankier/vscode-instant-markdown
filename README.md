@@ -4,7 +4,7 @@
 
 ![screencast](./vscode-instant-markdown.gif)
 
-Uses [instant-markdown-d](https://github.com/suan/instant-markdown-d).
+**Note** Version 2.0 is a complete rewrite and no longer works using instant-markdown-d.
 
 ## Installation
 

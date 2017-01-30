@@ -2,7 +2,7 @@
   "name": "vscode-instant-markdown",
   "displayName": "Instant Markdown",
   "description": "Instant previews of your markdown files as you type.",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "publisher": "dbankier",
   "homepage": "https://github.com/dbankier/vscode-instant-markdown/blob/master/README.md",
   "repository": {
@@ -10,7 +10,7 @@
     "url": "https://github.com/ziyasal/vscode-instant-markdown.git"
   },
   "engines": {
-    "vscode": "^0.10.1"
+    "vscode": "^1.0.0"
   },
   "categories": [
     "Other"
@@ -18,15 +18,25 @@
   "activationEvents": [
     "onLanguage:markdown"
   ],
-  "main": "./extension",
+  "main": "./out/src/extension",
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
   "devDependencies": {
-    "vscode": "0.10.x"
+    "typescript": "^2.0.3",
+    "vscode": "^1.0.0",
+    "@types/node": "^6.0.40"
   },
   "dependencies": {
-    "bluebird": "^3.0.6",
-    "instant-markdown-d": "git://github.com/suan/instant-markdown-d.git",
+    "express": "^4.14.1",
+    "github-markdown-css": "^2.4.1",
+    "markdown-it": "^8.2.2",
+    "markdown-it-task-lists": "^1.4.1",
+    "marked": "^0.3.6",
     "open": "0.0.5",
-    "request": "^2.67.0",
-    "shelljs": "^0.5.3"
+    "opn": "^4.0.2",
+    "socket.io": "^1.7.2"
   }
 }
