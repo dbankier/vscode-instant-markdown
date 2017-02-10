@@ -33,7 +33,7 @@ npm install
 
 When you edit a markdown document it should instantly preview in your browser with changes applied as you type.
 
-You browser should automatically open to `http://localhost:3000`
+You browser should automatically open to `http://localhost:8090`
 
 
 ## License
