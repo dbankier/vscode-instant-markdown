@@ -32,6 +32,7 @@
   "dependencies": {
     "express": "^4.14.1",
     "github-markdown-css": "^2.4.1",
+    "highlight.js": "^9.9.0",
     "markdown-it": "^8.2.2",
     "markdown-it-task-lists": "^1.4.1",
     "opn": "^4.0.2",

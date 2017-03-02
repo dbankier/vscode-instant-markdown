@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 class Server {
     constructor(options) {
@@ -12,6 +13,9 @@ class Server {
         });
         app.get('/github-markdown.css', function (req, res) {
             res.sendfile(path.resolve(__dirname, '..', '..', 'node_modules', 'github-markdown-css', 'github-markdown.css'));
+        });
+        app.get('/github-highlight.css', function (req, res) {
+            res.sendfile(path.resolve(__dirname, '..', '..', 'node_modules', 'highlight.js', 'styles', 'github.css'));
         });
         this.sockets = {};
         var nextSocketId = 0;
@@ -42,6 +46,5 @@ class Server {
         });
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Server;
 //# sourceMappingURL=server.js.map

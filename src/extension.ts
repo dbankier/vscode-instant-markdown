@@ -4,6 +4,7 @@ import * as vscode from 'vscode'
 import Server from './server'
 const path = require('path');
 const open = require('opn')
+const hljs = require('highlight.js')
 const MarkdownIt = require('markdown-it')
 var taskLists = require('markdown-it-task-lists');
 
@@ -30,7 +31,16 @@ function InstantMarkdown() {
     }
   };
   this.pushMarkdown = function() {
-    let md = new MarkdownIt();
+    let md = new MarkdownIt('default', {
+      highlight: function (str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+          try {
+            return hljs.highlight(lang, str).value;
+          } catch (__) {}
+        }
+        return '';
+      }
+    });
     server.send(md.use(taskLists).render(vscode.window.activeTextEditor.document.getText()))
   }
   this.update = function() {
