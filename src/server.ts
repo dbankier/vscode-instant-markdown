@@ -22,6 +22,10 @@ export default  class Server {
             res.sendfile(path.resolve(__dirname , '..','..','node_modules','github-markdown-css','github-markdown.css'))
         })
 
+        app.get('/github-highlight.css', function(req,res) {
+            res.sendfile(path.resolve(__dirname , '..','..','node_modules','highlight.js','styles', 'github.css'))
+        })
+
         this.sockets = {};
         var nextSocketId = 0;
         http.on('connection', (socket) => {

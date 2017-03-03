@@ -1,10 +1,12 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
 const server_1 = require("./server");
 const path = require('path');
 const open = require('opn');
+const hljs = require('highlight.js');
 const MarkdownIt = require('markdown-it');
 var taskLists = require('markdown-it-task-lists');
 function activate(context) {
@@ -29,7 +31,17 @@ function InstantMarkdown() {
         }
     };
     this.pushMarkdown = function () {
-        let md = new MarkdownIt();
+        let md = new MarkdownIt('default', {
+            highlight: function (str, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(lang, str).value;
+                    }
+                    catch (__) { }
+                }
+                return '';
+            }
+        });
         server.send(md.use(taskLists).render(vscode.window.activeTextEditor.document.getText()));
     };
     this.update = function () {
