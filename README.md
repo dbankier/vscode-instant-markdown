@@ -4,7 +4,7 @@
 
 ![screencast](./vscode-instant-markdown.gif)
 
-**Note** Version 2.0 is a complete rewrite and no longer works using instant-markdown-d.
+**Note** Version 1.0 is a complete rewrite and no longer works using instant-markdown-d.
 
 ## Installation
 
