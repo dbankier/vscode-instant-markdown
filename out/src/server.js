@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 class Server {
     constructor(options) {
@@ -46,5 +45,6 @@ class Server {
         });
     }
 }
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Server;
 //# sourceMappingURL=server.js.map
