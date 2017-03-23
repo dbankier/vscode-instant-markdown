@@ -13,18 +13,27 @@ function activate(context) {
     var instantMarkdownController = new InstantMarkdownController(instantMarkdown);
     context.subscriptions.push(instantMarkdown);
     context.subscriptions.push(instantMarkdownController);
+    context.subscriptions.push(vscode.commands.registerCommand('instantmarkdown.openBrowser', openBrowser));
+}
+let last_instance;
+function openBrowser() {
+    open("http://localhost:8090");
+    if (last_instance) {
+        setTimeout(() => last_instance.pushMarkdown(), 1000);
+    }
 }
 function InstantMarkdown() {
     let started = false;
     let server;
-    let self = this;
+    let self = last_instance = this;
     this.initialise = function (callback) {
         if (!server) {
             server = new server_1.default({
                 started() {
                     started = true;
-                    open("http://localhost:8090");
-                    setTimeout(() => self.pushMarkdown(), 1000);
+                    if (vscode.workspace.getConfiguration("instantmarkdown").get("autoOpenBrowser")) {
+                        openBrowser();
+                    }
                 }
             });
         }

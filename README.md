@@ -35,6 +35,13 @@ When you edit a markdown document it should instantly preview in your browser wi
 
 You browser should automatically open to `http://localhost:8090`
 
+### Configuration
+
+You can turn off the automatic opening of the browser. Just change the default configuration of `instantmarkdown.autoOpenBrowser` from `true` to `false`.
+
+You can then use `> Instant Markdown: Open Browser` to open the broswer or create a shortcut for the following command `instantmarkdown.openBrowser`.
+
+
 
 ## License
 

@@ -11,47 +11,56 @@ var taskLists = require('markdown-it-task-lists');
 function activate(context) {
   var instantMarkdown = new InstantMarkdown();
   var instantMarkdownController = new InstantMarkdownController(instantMarkdown);
-	context.subscriptions.push(instantMarkdown);
+  context.subscriptions.push(instantMarkdown);
   context.subscriptions.push(instantMarkdownController);
+  context.subscriptions.push(vscode.commands.registerCommand('instantmarkdown.openBrowser', openBrowser));
 }
 
+let last_instance;
+function openBrowser() {
+  open("http://localhost:8090")
+  if (last_instance) {
+    setTimeout(() => last_instance.pushMarkdown(), 1000)
+  }
+}
 function InstantMarkdown() {
   let started = false;
   let server;
-  let self = this;
-  this.initialise = function(callback) {
+  let self = last_instance = this;
+  this.initialise = function (callback) {
     if (!server) {
       server = new Server({
         started() {
           started = true;
-          open("http://localhost:8090")
-          setTimeout(() => self.pushMarkdown() , 1000)
+          if (vscode.workspace.getConfiguration("instantmarkdown").get("autoOpenBrowser")) {
+            openBrowser()
+          }
         }
       });
     }
   };
-  this.pushMarkdown = function() {
+  this.pushMarkdown = function () {
     let md = new MarkdownIt('default', {
       html: true,
       highlight: function (str, lang) {
         if (lang && hljs.getLanguage(lang)) {
           try {
             return hljs.highlight(lang, str).value;
-          } catch (__) {}
+          } catch (__) { }
         }
         return '';
       }
     });
     server.send(md.use(taskLists).render(vscode.window.activeTextEditor.document.getText()))
   }
-  this.update = function() {
+  this.update = function () {
     if (started) {
       this.pushMarkdown();
     } else {
       this.initialise(this.pushMarkdown);
     }
   };
-  this.close = function() {
+  this.close = function () {
     server.close()
     server = false;
     started = false;

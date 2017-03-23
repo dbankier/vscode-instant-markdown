@@ -18,6 +18,23 @@
   "activationEvents": [
     "onLanguage:markdown"
   ],
+  "contributes": {
+    "commands" : [{
+      "command" : "instantmarkdown.openBrowser",
+      "title" : "Instant Markdown: Open Browser"
+    }],
+    "configuration": {
+      "type": "object",
+      "title": "Instant Markdown configuration",
+      "properties": {
+        "instantmarkdown.autoOpenBrowser" : {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open the browser window when opening or editting a markdown file"
+        }
+      }
+    }
+  },
   "main": "./out/src/extension",
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
