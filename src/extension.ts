@@ -40,6 +40,7 @@ function InstantMarkdown() {
       });
     }
   };
+  let old_markdown = "";
   this.pushMarkdown = function () {
     let md = new MarkdownIt('default', {
       html: true,
@@ -52,7 +53,22 @@ function InstantMarkdown() {
         return '';
       }
     });
-    server.send(md.use(taskLists).render(vscode.window.activeTextEditor.document.getText()))
+    var new_markdown = md.use(taskLists).render(vscode.window.activeTextEditor.document.getText());
+    if (old_markdown !== "") {
+      let send_markdown = ''
+      for (let i = 0; i < new_markdown.length && send_markdown === ''; i++) {
+        if (new_markdown[i] !== old_markdown[i]) {
+          send_markdown = new_markdown.substring(0,i) + '<span id="instant-markdown-cursor"></span>' + new_markdown.substring(i);
+          server.send(send_markdown)
+        }
+      }
+      if (send_markdown === '') {
+        server.send(new_markdown)
+      }
+    } else {
+      server.send(new_markdown)
+    }
+    old_markdown = new_markdown;
   }
   this.update = function () {
     if (started) {

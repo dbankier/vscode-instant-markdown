@@ -18,6 +18,10 @@
       var socket = io();
       socket.on('markdown', function (msg) {
         document.getElementById("markdown").innerHTML = msg;
+        var cursor = document.getElementById("instant-markdown-cursor");
+        if (cursor) {
+          cursor.scrollIntoView();
+        }
       });
       socket.on('disconnect', function() {
         window.close();
