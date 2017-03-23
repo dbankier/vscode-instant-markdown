@@ -1,5 +1,6 @@
 "use strict";
 const path = require("path");
+const fs = require("fs");
 class Server {
     constructor(options) {
         const app = require('express')();
@@ -15,6 +16,15 @@ class Server {
         });
         app.get('/github-highlight.css', function (req, res) {
             res.sendfile(path.resolve(__dirname, '..', '..', 'node_modules', 'highlight.js', 'styles', 'github.css'));
+        });
+        app.get('*', function (req, res) {
+            let file = path.resolve(path.join(options.root, req.url));
+            if (fs.existsSync(file)) {
+                res.sendFile(file);
+            }
+            else {
+                res.status(404).send("Not Found");
+            }
         });
         this.sockets = {};
         var nextSocketId = 0;

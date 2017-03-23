@@ -1,5 +1,7 @@
 import * as path from 'path'
+import * as fs from 'fs'
 interface ServerOption {
+    root: string;
     started: () => void
 }
 export default  class Server {
@@ -24,6 +26,15 @@ export default  class Server {
 
         app.get('/github-highlight.css', function(req,res) {
             res.sendfile(path.resolve(__dirname , '..','..','node_modules','highlight.js','styles', 'github.css'))
+        })
+
+        app.get('*', function(req,res) {
+            let file = path.resolve(path.join(options.root, req.url));
+            if (fs.existsSync(file)) {
+                res.sendFile(file)
+            } else {
+                res.status(404).send("Not Found")
+            }
         })
 
         this.sockets = {};

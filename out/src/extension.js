@@ -29,6 +29,7 @@ function InstantMarkdown() {
     this.initialise = function (callback) {
         if (!server) {
             server = new server_1.default({
+                root: path.dirname(vscode.window.activeTextEditor.document.fileName),
                 started() {
                     started = true;
                     if (vscode.workspace.getConfiguration("instantmarkdown").get("autoOpenBrowser")) {
