@@ -19,15 +19,17 @@
     "onLanguage:markdown"
   ],
   "contributes": {
-    "commands" : [{
-      "command" : "instantmarkdown.openBrowser",
-      "title" : "Instant Markdown: Open Browser"
-    }],
+    "commands": [
+      {
+        "command": "instantmarkdown.openBrowser",
+        "title": "Instant Markdown: Open Browser"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "Instant Markdown configuration",
       "properties": {
-        "instantmarkdown.autoOpenBrowser" : {
+        "instantmarkdown.autoOpenBrowser": {
           "type": "boolean",
           "default": true,
           "description": "Automatically open the browser window when opening or editting a markdown file"
@@ -51,6 +53,7 @@
     "github-markdown-css": "^2.4.1",
     "highlight.js": "^9.9.0",
     "markdown-it": "^8.2.2",
+    "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^1.4.1",
     "opn": "^4.0.2",
     "socket.io": "^1.7.2"
