@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
 class Server {
@@ -34,8 +35,9 @@ class Server {
             this.sockets[socketId] = socket;
             socket.on('close', () => { delete this.sockets[socketId]; });
         });
-        http.listen(8090, function () {
-            console.log('listening on *:8090');
+        var port = vscode.workspace.getConfiguration("instantmarkdown").get("port");
+        http.listen(port, function () {
+            console.log('listening on *:' + port);
             options.started();
         });
         this.io = io;

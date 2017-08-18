@@ -33,6 +33,11 @@
           "type": "boolean",
           "default": true,
           "description": "Automatically open the browser window when opening or editting a markdown file"
+        },
+        "instantmarkdown.port": {
+          "type": "number",
+          "default": 8090,
+          "description": "Port to run the server on"
         }
       }
     }

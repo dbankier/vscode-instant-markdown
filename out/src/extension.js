@@ -19,7 +19,8 @@ function activate(context) {
 }
 let last_instance;
 function openBrowser() {
-    open("http://localhost:8090");
+    var port = vscode.workspace.getConfiguration("instantmarkdown").get("port");
+    open("http://localhost:" + port);
     if (last_instance) {
         setTimeout(() => last_instance.pushMarkdown(), 1000);
     }
