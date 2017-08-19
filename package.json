@@ -60,6 +60,7 @@
     "markdown-it": "^8.2.2",
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^1.4.1",
+    "markdown-it-named-headers": "^0.0.4",
     "opn": "^4.0.2",
     "socket.io": "^1.7.2"
   }
