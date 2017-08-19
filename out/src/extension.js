@@ -8,6 +8,7 @@ const path = require('path');
 const open = require('opn');
 const hljs = require('highlight.js');
 const MarkdownIt = require('markdown-it');
+const mdnh = require('markdown-it-named-headers');
 var taskLists = require('markdown-it-task-lists');
 var sup = require('markdown-it-sup');
 function activate(context) {
@@ -55,7 +56,7 @@ function InstantMarkdown() {
                 return '';
             }
         });
-        var new_markdown = md.use(taskLists).use(sup).render(vscode.window.activeTextEditor.document.getText());
+        var new_markdown = md.use(taskLists).use(sup).use(mdnh).render(vscode.window.activeTextEditor.document.getText());
         if (old_markdown !== "") {
             let send_markdown = '';
             for (let i = 0; i < new_markdown.length && send_markdown === ''; i++) {
