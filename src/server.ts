@@ -1,3 +1,4 @@
+import * as vscode from 'vscode'
 import * as path from 'path'
 import * as fs from 'fs'
 interface ServerOption {
@@ -45,8 +46,9 @@ export default  class Server {
             socket.on('close',  () => { delete this.sockets[socketId]; });
         });
 
-        http.listen(8090, function(){
-            console.log('listening on *:8090');
+        var port = vscode.workspace.getConfiguration("instantmarkdown").get("port");
+        http.listen(port, function(){
+            console.log('listening on *:' + port);
             options.started()
         });
 
