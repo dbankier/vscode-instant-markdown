@@ -11,6 +11,7 @@ const MarkdownIt = require('markdown-it');
 const mdnh = require('markdown-it-named-headers');
 var taskLists = require('markdown-it-task-lists');
 var sup = require('markdown-it-sup');
+const plantuml = require('markdown-it-plantuml');
 function activate(context) {
     var instantMarkdown = new InstantMarkdown();
     var instantMarkdownController = new InstantMarkdownController(instantMarkdown);
@@ -57,7 +58,7 @@ function InstantMarkdown() {
                 return '';
             }
         });
-        var new_markdown = md.use(taskLists).use(sup).use(mdnh).render(vscode.window.activeTextEditor.document.getText());
+        var new_markdown = md.use(taskLists).use(sup).use(mdnh).use(plantuml).render(vscode.window.activeTextEditor.document.getText());
         if (old_markdown !== "") {
             let send_markdown = '';
             for (let i = 0; i < new_markdown.length && send_markdown === ''; i++) {
