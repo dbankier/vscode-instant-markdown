@@ -2,7 +2,7 @@
   "name": "vscode-instant-markdown",
   "displayName": "Instant Markdown",
   "description": "Instant previews of your markdown files as you type.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "publisher": "dbankier",
   "homepage": "https://github.com/dbankier/vscode-instant-markdown/blob/master/README.md",
   "repository": {
@@ -34,6 +34,16 @@
           "default": true,
           "description": "Automatically open the browser window when opening or editting a markdown file"
         },
+        "instantmarkdown.autoCloseServerAndBrowser": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically close the browser window when opening or editting a non-markdown file"
+        },
+        "instantmarkdown.host": {
+          "type": "string",
+          "default": "localhost",
+          "description": "Host to run the server on"
+        },
         "instantmarkdown.port": {
           "type": "number",
           "default": 8090,
@@ -58,10 +68,11 @@
     "github-markdown-css": "^2.4.1",
     "highlight.js": "^9.9.0",
     "markdown-it": "^8.2.2",
-    "markdown-it-sup": "^1.0.0",
-    "markdown-it-task-lists": "^1.4.1",
+    "markdown-it-mathjax": "^2.0.0",
     "markdown-it-named-headers": "^0.0.4",
     "markdown-it-plantuml": "^0.3.1",
+    "markdown-it-sup": "^1.0.0",
+    "markdown-it-task-lists": "^1.4.1",
     "opn": "^4.0.2",
     "socket.io": "^1.7.2"
   }

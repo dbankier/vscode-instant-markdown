@@ -47,7 +47,8 @@ export default  class Server {
         });
 
         var port = vscode.workspace.getConfiguration("instantmarkdown").get("port");
-        http.listen(port, function(){
+        var host = vscode.workspace.getConfiguration("instantmarkdown").get("host");
+        http.listen(port, host, function(){
             console.log('listening on *:' + port);
             options.started()
         });

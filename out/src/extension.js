@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
@@ -8,10 +7,6 @@ const path = require('path');
 const open = require('opn');
 const hljs = require('highlight.js');
 const MarkdownIt = require('markdown-it');
-const mdnh = require('markdown-it-named-headers');
-var taskLists = require('markdown-it-task-lists');
-var sup = require('markdown-it-sup');
-const plantuml = require('markdown-it-plantuml');
 function activate(context) {
     var instantMarkdown = new InstantMarkdown();
     var instantMarkdownController = new InstantMarkdownController(instantMarkdown);
@@ -22,7 +17,8 @@ function activate(context) {
 let last_instance;
 function openBrowser() {
     var port = vscode.workspace.getConfiguration("instantmarkdown").get("port");
-    open("http://localhost:" + port);
+    var host = vscode.workspace.getConfiguration("instantmarkdown").get("host");
+    open("http://" + host + ":" + port);
     if (last_instance) {
         setTimeout(() => last_instance.pushMarkdown(), 1000);
     }
@@ -58,7 +54,13 @@ function InstantMarkdown() {
                 return '';
             }
         });
-        var new_markdown = md.use(taskLists).use(sup).use(mdnh).use(plantuml).render(vscode.window.activeTextEditor.document.getText());
+        var new_markdown = md
+            .use(require('markdown-it-task-lists'))
+            .use(require('markdown-it-sup'))
+            .use(require('markdown-it-named-headers'))
+            .use(require('markdown-it-plantuml'))
+            .use(require('markdown-it-mathjax'))
+            .render(vscode.window.activeTextEditor.document.getText());
         if (old_markdown !== "") {
             let send_markdown = '';
             for (let i = 0; i < new_markdown.length && send_markdown === ''; i++) {
@@ -85,8 +87,10 @@ function InstantMarkdown() {
         }
     };
     this.close = function () {
-        server.close();
-        server = false;
+        if (vscode.workspace.getConfiguration("instantmarkdown").get("autoCloseServerAndBrowser")) {
+            server.close();
+            server = false;
+        }
         started = false;
     };
 }

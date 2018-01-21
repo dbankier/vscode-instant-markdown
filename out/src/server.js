@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
@@ -36,7 +35,8 @@ class Server {
             socket.on('close', () => { delete this.sockets[socketId]; });
         });
         var port = vscode.workspace.getConfiguration("instantmarkdown").get("port");
-        http.listen(port, function () {
+        var host = vscode.workspace.getConfiguration("instantmarkdown").get("host");
+        http.listen(port, host, function () {
             console.log('listening on *:' + port);
             options.started();
         });
@@ -58,5 +58,6 @@ class Server {
         });
     }
 }
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Server;
 //# sourceMappingURL=server.js.map
