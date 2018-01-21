@@ -41,6 +41,10 @@ You can turn off the automatic opening of the browser. Just change the default c
 
 You can then use `> Instant Markdown: Open Browser` to open the broswer or create a shortcut for the following command `instantmarkdown.openBrowser`.
 
+You can turn off the automatic closing of the browser. Just change the default configuration of `instantmarkdown.autoCloseServerAndBrowser` from `true` to `false`.
+
+You can also change the `host` and `port` that the server runs on by changing their respective default settings.
+
 
 
 ## License
