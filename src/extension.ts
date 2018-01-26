@@ -88,8 +88,8 @@ function InstantMarkdown() {
     if (vscode.workspace.getConfiguration("instantmarkdown").get("autoCloseServerAndBrowser")) {
       server.close()
       server = false;
+      started = false;
     }
-    started = false;
   }
 }
 
