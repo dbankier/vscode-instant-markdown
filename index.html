@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="github-markdown.css">
 <link rel="stylesheet" href="github-highlight.css">
 <script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <script>
       var socket = io();
       socket.on('markdown', function (msg) {
@@ -22,6 +23,8 @@
         if (cursor) {
           cursor.scrollIntoView();
         }
+
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
       });
       socket.on('disconnect', function() {
         window.close();

@@ -59,7 +59,7 @@ function InstantMarkdown() {
             .use(require('markdown-it-sup'))
             .use(require('markdown-it-named-headers'))
             .use(require('markdown-it-plantuml'))
-            .use(require('markdown-it-mathjax'))
+            .use(require('markdown-it-mathjax')())
             .render(vscode.window.activeTextEditor.document.getText());
         if (old_markdown !== "") {
             let send_markdown = '';
