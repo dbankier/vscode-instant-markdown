@@ -6,6 +6,15 @@
 
 **Note** Version 1.0 is a complete rewrite and no longer works using instant-markdown-d.
 
+This extension is build on [markdown-it](https://github.com/markdown-it/markdown-it) and uses the following extensions:
+
+* markdown-it-mathjax
+* markdown-it-named-headers
+* markdown-it-plantuml
+* markdown-it-sup
+* markdown-it-task-lists
+
+
 ## Installation
 
 Press <kbd>F1</kbd> and narrow down the list commands by typing `extension`. Pick `Extensions: Install Extension`.
