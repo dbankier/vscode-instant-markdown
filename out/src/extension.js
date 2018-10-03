@@ -7,6 +7,7 @@ const path = require('path');
 const open = require('opn');
 const hljs = require('highlight.js');
 const MarkdownIt = require('markdown-it');
+const debounce = require('debounce');
 function activate(context) {
     var instantMarkdown = new InstantMarkdown();
     var instantMarkdownController = new InstantMarkdownController(instantMarkdown);
@@ -78,9 +79,17 @@ function InstantMarkdown() {
         }
         old_markdown = new_markdown;
     };
+    let last_debounce = vscode.workspace.getConfiguration("instantmarkdown").get("debounce");
+    let debouncedPush = debounce(this.pushMarkdown, last_debounce);
     this.update = function () {
+        //check if the config has changed
+        let curr_debounce = vscode.workspace.getConfiguration("instantmarkdown").get("debounce");
+        if (curr_debounce !== last_debounce) {
+            last_debounce = curr_debounce;
+            debouncedPush = debounce(this.pushMarkdown, last_debounce);
+        }
         if (started) {
-            this.pushMarkdown();
+            debouncedPush();
         }
         else {
             this.initialise(this.pushMarkdown);

@@ -54,6 +54,7 @@ You can turn off the automatic closing of the browser. Just change the default c
 
 You can also change the `host` and `port` that the server runs on by changing their respective default settings.
 
+Finally you can increase the `debounce` value from `0` milliseconds to make the plugin less instant.
 
 
 ## License

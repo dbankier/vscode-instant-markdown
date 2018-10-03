@@ -2,7 +2,7 @@
   "name": "vscode-instant-markdown",
   "displayName": "Instant Markdown",
   "description": "Instant previews of your markdown files as you type.",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "publisher": "dbankier",
   "homepage": "https://github.com/dbankier/vscode-instant-markdown/blob/master/README.md",
   "repository": {
@@ -48,6 +48,11 @@
           "type": "number",
           "default": 8090,
           "description": "Port to run the server on"
+        },
+        "instantmarkdown.debounce": {
+          "type": "number",
+          "default": 0,
+          "description": "Make instant markdown less instance with a debounce interval (ms)"
         }
       }
     }
@@ -64,6 +69,7 @@
     "@types/node": "^6.0.40"
   },
   "dependencies": {
+    "debounce": "^1.2.0",
     "express": "^4.14.1",
     "github-markdown-css": "^2.4.1",
     "highlight.js": "^9.9.0",
