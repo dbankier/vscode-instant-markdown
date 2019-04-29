@@ -2,7 +2,7 @@
   "name": "vscode-instant-markdown",
   "displayName": "Instant Markdown",
   "description": "Instant previews of your markdown files as you type.",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "publisher": "dbankier",
   "homepage": "https://github.com/dbankier/vscode-instant-markdown/blob/master/README.md",
   "repository": {
@@ -12,12 +12,8 @@
   "engines": {
     "vscode": "^1.0.0"
   },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onLanguage:markdown"
-  ],
+  "categories": ["Other"],
+  "activationEvents": ["onLanguage:markdown"],
   "contributes": {
     "commands": [
       {
