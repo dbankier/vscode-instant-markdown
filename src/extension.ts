@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode'
 import Server from './server'
+
 const path = require('path');
 const open = require('opn')
 const hljs = require('highlight.js')
@@ -42,8 +43,8 @@ function InstantMarkdown() {
       });
     }
   };
-  let old_markdown = "";
-  this.pushMarkdown = function () {
+
+  this.pushMarkdown = function (event, textInView) {
     let md = new MarkdownIt('default', {
       html: true,
       linkify: true,
@@ -56,37 +57,44 @@ function InstantMarkdown() {
         return '';
       }
     });
+
+    var beforeText = vscode.window.activeTextEditor.document.getText()
+
+    if (event === 'scroll') {
+      var position = beforeText.indexOf(textInView)
+
+      var afterText = beforeText.substring(0, position) + "<span id=\"instant-markdown-cursor\"></span>\n" + beforeText.substring(position, beforeText.length)
+    }
+    else if (event === 'cursor') {
+      for (var i = 0; i < beforeText.length; i++) {
+        if (beforeText[i] !== textInView[i]) {
+          var afterText = beforeText.substring(0, i) + "<span id=\"instant-markdown-cursor\"></span>" + beforeText.substring(i, beforeText.length)
+          break;
+        }
+      }
+    }
+    else {
+      var afterText = beforeText
+    }
+
     var new_markdown = md
       .use(require('markdown-it-task-lists'))
       .use(require('markdown-it-sup'))
       .use(require('markdown-it-named-headers'))
       .use(require('markdown-it-plantuml'))
       .use(require('markdown-it-mathjax')())
-      .render(vscode.window.activeTextEditor.document.getText());
-    if (old_markdown !== "") {
-      let send_markdown = ''
-      for (let i = 0; i < new_markdown.length && send_markdown === ''; i++) {
-        if (new_markdown[i] !== old_markdown[i]) {
-          send_markdown = new_markdown.substring(0,i) + '<span id="instant-markdown-cursor"></span>' + new_markdown.substring(i);
-          server.send(send_markdown)
-        }
-      }
-      if (send_markdown === '') {
-        server.send(new_markdown)
-      }
-    } else {
-      server.send(new_markdown)
-    }
-    old_markdown = new_markdown;
+      .render(afterText);
+
+    server.send(new_markdown)
   }
   let last_debounce = vscode.workspace.getConfiguration("instantmarkdown").get("debounce");
-  let debouncedPush = debounce(this.pushMarkdown, last_debounce);
-  this.update = function () {
+  this.update = function (event, textInView) {
+    let debouncedPush = debounce(function () { self.pushMarkdown (event, textInView) }, last_debounce);
     //check if the config has changed
     let curr_debounce = vscode.workspace.getConfiguration("instantmarkdown").get("debounce");
     if (curr_debounce !== last_debounce) {
       last_debounce = curr_debounce;
-      debouncedPush = debounce(this.pushMarkdown, last_debounce);
+      debouncedPush = debounce(function () { self.pushMarkdown (event, textInView) }, last_debounce);
     }
     if (started) {
       debouncedPush();
@@ -115,8 +123,52 @@ function InstantMarkdownController(md) {
       md.close();
     }
   }
+  function scrollUpdate(event) {
+    var textInView = getTextInViewScroll(event.textEditor as vscode.TextEditor)
+    md.update('scroll', textInView);
+  }
+  function cursorUpdate(event) {
+    var textInView = getTextInViewCursor(event.textEditor as vscode.TextEditor)
+    md.update('cursor', textInView);
+  }
   vscode.window.onDidChangeActiveTextEditor(update, this, subscriptions);
-  vscode.window.onDidChangeTextEditorSelection(update, this, subscriptions);
+  vscode.window.onDidChangeTextEditorSelection(cursorUpdate, this, subscriptions);
+  vscode.window.onDidChangeTextEditorVisibleRanges(scrollUpdate, this, subscriptions);
   md.update();
 }
+
+function getTextInViewScroll(editor: vscode.TextEditor) {
+  if (!editor["visibleRanges"].length) {
+    return undefined;
+  }
+
+  var view = editor["visibleRanges"][0]
+  var start = view.start
+  var end = view.end
+
+  var startLine = start.line
+  var endLine = end.line
+
+  var startCharacter = start.character
+  var endCharacter = end.character
+
+  var textInView = editor.document.getText(new vscode.Range(startLine, startCharacter, endLine, endCharacter));
+
+  return textInView;
+}
+
+function getTextInViewCursor(editor: vscode.TextEditor) {
+  var currentLocation = editor.selection.active
+
+  var startLine = 0
+  var endLine = currentLocation.line
+
+  var startCharacter = 0
+  var endCharacter = currentLocation.character
+
+  var textInView = editor.document.getText(new vscode.Range(startLine, startCharacter, endLine, endCharacter));
+
+  return textInView;
+}
+
 exports.activate = activate;
