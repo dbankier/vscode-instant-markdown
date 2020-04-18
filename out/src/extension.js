@@ -42,6 +42,7 @@ function InstantMarkdown() {
         }
     };
     this.pushMarkdown = function (event, textInView) {
+        const scrollEnabled = vscode.workspace.getConfiguration("instantmarkdown").get("scroll");
         let md = new MarkdownIt('default', {
             html: true,
             linkify: true,
@@ -56,7 +57,7 @@ function InstantMarkdown() {
             }
         });
         var beforeText = vscode.window.activeTextEditor.document.getText();
-        if (event === 'scroll') {
+        if (event === 'scroll' && scrollEnabled) {
             var position = beforeText.indexOf(textInView);
             var afterText = beforeText.substring(0, position) + "<span id=\"instant-markdown-cursor\"></span>\n" + beforeText.substring(position, beforeText.length);
         }
