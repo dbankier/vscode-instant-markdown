@@ -1,40 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <title>Instant Markdown</title>
-  <style>
+  <head>
+    <title>Instant Markdown</title>
+    <style>
       .markdown-body {
-          box-sizing: border-box;
-          min-width: 200px;
-          max-width: 980px;
-          margin: 0 auto;
-          padding: 45px;
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
       }
     </style>
-<link rel="stylesheet" href="github-markdown.css">
-<link rel="stylesheet" href="github-highlight.css">
-<script src="/socket.io/socket.io.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
-<script>
+    <link rel="stylesheet" href="github-markdown.css" />
+    <link rel="stylesheet" href="github-highlight.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+      async
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
       var socket = io();
       socket.on('markdown', function (msg) {
-        document.getElementById("markdown").innerHTML = msg;
-        var cursor = document.getElementById("instant-markdown-cursor");
+        document.getElementById('markdown').innerHTML = msg;
+        var cursor = document.getElementById('instant-markdown-cursor');
         if (cursor) {
           cursor.scrollIntoView();
         }
 
-        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        mermaid.init();
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
       });
-      socket.on('disconnect', function() {
+      socket.on('disconnect', function () {
         window.close();
-      })
+      });
     </script>
-</head>
+  </head>
 
-<body>
-  <article id="markdown" class="markdown-body">
-  </article>
-</body>
-
+  <body>
+    <article id="markdown" class="markdown-body"></article>
+  </body>
 </html>

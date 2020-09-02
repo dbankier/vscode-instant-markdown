@@ -12,8 +12,12 @@
   "engines": {
     "vscode": "^1.0.0"
   },
-  "categories": ["Other"],
-  "activationEvents": ["onLanguage:markdown"],
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
   "contributes": {
     "commands": [
       {
@@ -71,6 +75,7 @@
     "highlight.js": "^9.9.0",
     "markdown-it": "^8.2.2",
     "markdown-it-mathjax": "^2.0.0",
+    "markdown-it-mermaid": "^0.2.5",
     "markdown-it-named-headers": "^0.0.4",
     "markdown-it-plantuml": "^0.3.1",
     "markdown-it-sup": "^1.0.0",

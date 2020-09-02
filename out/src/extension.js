@@ -17,9 +17,9 @@ function activate(context) {
 }
 let last_instance;
 function openBrowser() {
-    var port = vscode.workspace.getConfiguration("instantmarkdown").get("port");
-    var host = vscode.workspace.getConfiguration("instantmarkdown").get("host");
-    open("http://" + host + ":" + port);
+    var port = vscode.workspace.getConfiguration('instantmarkdown').get('port');
+    var host = vscode.workspace.getConfiguration('instantmarkdown').get('host');
+    open('http://' + host + ':' + port);
     if (last_instance) {
         setTimeout(() => last_instance.pushMarkdown(), 1000);
     }
@@ -27,21 +27,23 @@ function openBrowser() {
 function InstantMarkdown() {
     let started = false;
     let server;
-    let self = last_instance = this;
+    let self = (last_instance = this);
     this.initialise = function (callback) {
         if (!server) {
             server = new server_1.default({
                 root: path.dirname(vscode.window.activeTextEditor.document.fileName),
                 started() {
                     started = true;
-                    if (vscode.workspace.getConfiguration("instantmarkdown").get("autoOpenBrowser")) {
+                    if (vscode.workspace
+                        .getConfiguration('instantmarkdown')
+                        .get('autoOpenBrowser')) {
                         openBrowser();
                     }
-                }
+                },
             });
         }
     };
-    let old_markdown = "";
+    let old_markdown = '';
     this.pushMarkdown = function () {
         let md = new MarkdownIt('default', {
             html: true,
@@ -54,7 +56,7 @@ function InstantMarkdown() {
                     catch (__) { }
                 }
                 return '';
-            }
+            },
         });
         var new_markdown = md
             .use(require('markdown-it-task-lists'))
@@ -62,12 +64,16 @@ function InstantMarkdown() {
             .use(require('markdown-it-named-headers'))
             .use(require('markdown-it-plantuml'))
             .use(require('markdown-it-mathjax')())
+            .use(require('markdown-it-mermaid').default)
             .render(vscode.window.activeTextEditor.document.getText());
-        if (old_markdown !== "") {
+        if (old_markdown !== '') {
             let send_markdown = '';
             for (let i = 0; i < new_markdown.length && send_markdown === ''; i++) {
                 if (new_markdown[i] !== old_markdown[i]) {
-                    send_markdown = new_markdown.substring(0, i) + '<span id="instant-markdown-cursor"></span>' + new_markdown.substring(i);
+                    send_markdown =
+                        new_markdown.substring(0, i) +
+                            '<span id="instant-markdown-cursor"></span>' +
+                            new_markdown.substring(i);
                     server.send(send_markdown);
                 }
             }
@@ -80,11 +86,15 @@ function InstantMarkdown() {
         }
         old_markdown = new_markdown;
     };
-    let last_debounce = vscode.workspace.getConfiguration("instantmarkdown").get("debounce");
+    let last_debounce = vscode.workspace
+        .getConfiguration('instantmarkdown')
+        .get('debounce');
     let debouncedPush = debounce(this.pushMarkdown, last_debounce);
     this.update = function () {
         //check if the config has changed
-        let curr_debounce = vscode.workspace.getConfiguration("instantmarkdown").get("debounce");
+        let curr_debounce = vscode.workspace
+            .getConfiguration('instantmarkdown')
+            .get('debounce');
         if (curr_debounce !== last_debounce) {
             last_debounce = curr_debounce;
             debouncedPush = debounce(this.pushMarkdown, last_debounce);
@@ -97,7 +107,9 @@ function InstantMarkdown() {
         }
     };
     this.close = function () {
-        if (vscode.workspace.getConfiguration("instantmarkdown").get("autoCloseServerAndBrowser")) {
+        if (vscode.workspace
+            .getConfiguration('instantmarkdown')
+            .get('autoCloseServerAndBrowser')) {
             server.close();
             server = false;
             started = false;
@@ -112,7 +124,7 @@ function InstantMarkdownController(md) {
             return;
         }
         var doc = editor.document;
-        if (doc.languageId === "markdown") {
+        if (doc.languageId === 'markdown') {
             md.update();
         }
         else {
