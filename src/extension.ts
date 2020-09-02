@@ -1,13 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-<<<<<<< HEAD
 import * as vscode from 'vscode';
 import Server from './server';
-=======
-import * as vscode from 'vscode'
-import Server from './server'
 
->>>>>>> c16f0d283f30b74aed6e5ce224c8189cc0699e2d
 const path = require('path');
 const open = require('opn');
 const hljs = require('highlight.js');
@@ -58,7 +53,9 @@ function InstantMarkdown() {
   };
 
   this.pushMarkdown = function (event, textInView) {
-    const scrollEnabled = vscode.workspace.getConfiguration("instantmarkdown").get("scroll")
+    const scrollEnabled = vscode.workspace
+      .getConfiguration('instantmarkdown')
+      .get('scroll');
 
     let md = new MarkdownIt('default', {
       html: true,
@@ -73,23 +70,27 @@ function InstantMarkdown() {
       },
     });
 
-    var beforeText = vscode.window.activeTextEditor.document.getText()
+    var beforeText = vscode.window.activeTextEditor.document.getText();
 
     if (event === 'scroll' && scrollEnabled) {
-      var position = beforeText.indexOf(textInView)
+      var position = beforeText.indexOf(textInView);
 
-      var afterText = beforeText.substring(0, position) + "<span id=\"instant-markdown-cursor\"></span>\n" + beforeText.substring(position, beforeText.length)
-    }
-    else if (event === 'cursor') {
+      var afterText =
+        beforeText.substring(0, position) +
+        '<span id="instant-markdown-cursor"></span>\n' +
+        beforeText.substring(position, beforeText.length);
+    } else if (event === 'cursor') {
       for (var i = 0; i < beforeText.length; i++) {
         if (beforeText[i] !== textInView[i]) {
-          var afterText = beforeText.substring(0, i) + "<span id=\"instant-markdown-cursor\"></span>" + beforeText.substring(i, beforeText.length)
+          var afterText =
+            beforeText.substring(0, i) +
+            '<span id="instant-markdown-cursor"></span>' +
+            beforeText.substring(i, beforeText.length);
           break;
         }
       }
-    }
-    else {
-      var afterText = beforeText
+    } else {
+      var afterText = beforeText;
     }
 
     var new_markdown = md
@@ -101,18 +102,24 @@ function InstantMarkdown() {
       .use(require('markdown-it-mermaid').default)
       .render(afterText);
 
-    server.send(new_markdown)
-  }
-  let last_debounce = vscode.workspace.getConfiguration("instantmarkdown").get("debounce");
+    server.send(new_markdown);
+  };
+  let last_debounce = vscode.workspace
+    .getConfiguration('instantmarkdown')
+    .get('debounce');
   this.update = function (event, textInView) {
-    let debouncedPush = debounce(function () { self.pushMarkdown (event, textInView) }, last_debounce);
+    let debouncedPush = debounce(function () {
+      self.pushMarkdown(event, textInView);
+    }, last_debounce);
     //check if the config has changed
     let curr_debounce = vscode.workspace
       .getConfiguration('instantmarkdown')
       .get('debounce');
     if (curr_debounce !== last_debounce) {
       last_debounce = curr_debounce;
-      debouncedPush = debounce(function () { self.pushMarkdown (event, textInView) }, last_debounce);
+      debouncedPush = debounce(function () {
+        self.pushMarkdown(event, textInView);
+      }, last_debounce);
     }
     if (started) {
       debouncedPush();
@@ -148,49 +155,68 @@ function InstantMarkdownController(md) {
     }
   }
   function scrollUpdate(event) {
-    var textInView = getTextInViewScroll(event.textEditor as vscode.TextEditor)
+    var textInView = getTextInViewScroll(event.textEditor as vscode.TextEditor);
     md.update('scroll', textInView);
   }
   function cursorUpdate(event) {
-    var textInView = getTextInViewCursor(event.textEditor as vscode.TextEditor)
+    var textInView = getTextInViewCursor(event.textEditor as vscode.TextEditor);
     md.update('cursor', textInView);
   }
   vscode.window.onDidChangeActiveTextEditor(update, this, subscriptions);
-  vscode.window.onDidChangeTextEditorSelection(cursorUpdate, this, subscriptions);
-  vscode.window.onDidChangeTextEditorVisibleRanges(scrollUpdate, this, subscriptions);
+  vscode.window.onDidChangeTextEditorSelection(
+    cursorUpdate,
+    this,
+    subscriptions
+  );
+  vscode.window.onDidChangeTextEditorVisibleRanges(
+    scrollUpdate,
+    this,
+    subscriptions
+  );
   md.update();
 }
 
 function getTextInViewScroll(editor: vscode.TextEditor) {
-  if (!editor["visibleRanges"].length) {
+  if (!editor['visibleRanges'].length) {
     return undefined;
   }
 
-  var view = editor["visibleRanges"][0]
-  var start = view.start
-  var end = view.end
+  var view = editor['visibleRanges'][0];
+  var start = view.start;
+  var end = view.end;
 
-  var startLine = start.line
-  var endLine = end.line
+  var startLine = start.line;
+  var endLine = end.line;
 
-  var startCharacter = start.character
-  var endCharacter = end.character
+  var startCharacter = start.character;
+  var endCharacter = end.character;
 
-  var textInView = editor.document.getText(new vscode.Range(startLine, startCharacter, endLine, endCharacter));
+  var textInView = editor.document.getText(
+    new vscode.Range(startLine, startCharacter, endLine, endCharacter)
+  );
 
   return textInView;
 }
 
 function getTextInViewCursor(editor: vscode.TextEditor) {
-  var currentLocation = editor.selection.active
+  var currentLocation = editor.selection.active;
 
-  var startLine = 0
-  var endLine = currentLocation.line
+  var startLine = 0;
+  var endLine = currentLocation.line;
 
-  var startCharacter = 0
-  var endCharacter = currentLocation.character
+  var startCharacter = 0;
+  var endCharacter = currentLocation.character;
 
-  var textInView = editor.document.getText(new vscode.Range(startLine, startCharacter, endLine, endCharacter));
+  var textInView = editor.document.getText(
+    new vscode.Range(startLine, startCharacter, endLine, endCharacter)
+  );
+
+  let nextChar = editor.document.getText(
+    new vscode.Range(endLine, endCharacter + 1, endLine, endCharacter + 2)
+  );
+  if (!nextChar) {
+    textInView = textInView.split('\n').slice(0, -1).join('\n');
+  }
 
   return textInView;
 }

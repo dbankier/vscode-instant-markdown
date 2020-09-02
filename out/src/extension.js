@@ -1,6 +1,6 @@
+"use strict";
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-"use strict";
 const vscode = require("vscode");
 const server_1 = require("./server");
 const path = require('path');
@@ -44,7 +44,9 @@ function InstantMarkdown() {
         }
     };
     this.pushMarkdown = function (event, textInView) {
-        const scrollEnabled = vscode.workspace.getConfiguration("instantmarkdown").get("scroll");
+        const scrollEnabled = vscode.workspace
+            .getConfiguration('instantmarkdown')
+            .get('scroll');
         let md = new MarkdownIt('default', {
             html: true,
             linkify: true,
@@ -61,12 +63,16 @@ function InstantMarkdown() {
         var beforeText = vscode.window.activeTextEditor.document.getText();
         if (event === 'scroll' && scrollEnabled) {
             var position = beforeText.indexOf(textInView);
-            var afterText = beforeText.substring(0, position) + "<span id=\"instant-markdown-cursor\"></span>\n" + beforeText.substring(position, beforeText.length);
+            var afterText = beforeText.substring(0, position) +
+                '<span id="instant-markdown-cursor"></span>\n' +
+                beforeText.substring(position, beforeText.length);
         }
         else if (event === 'cursor') {
             for (var i = 0; i < beforeText.length; i++) {
                 if (beforeText[i] !== textInView[i]) {
-                    var afterText = beforeText.substring(0, i) + "<span id=\"instant-markdown-cursor\"></span>" + beforeText.substring(i, beforeText.length);
+                    var afterText = beforeText.substring(0, i) +
+                        '<span id="instant-markdown-cursor"></span>' +
+                        beforeText.substring(i, beforeText.length);
                     break;
                 }
             }
@@ -84,16 +90,22 @@ function InstantMarkdown() {
             .render(afterText);
         server.send(new_markdown);
     };
-    let last_debounce = vscode.workspace.getConfiguration("instantmarkdown").get("debounce");
+    let last_debounce = vscode.workspace
+        .getConfiguration('instantmarkdown')
+        .get('debounce');
     this.update = function (event, textInView) {
-        let debouncedPush = debounce(function () { self.pushMarkdown(event, textInView); }, last_debounce);
+        let debouncedPush = debounce(function () {
+            self.pushMarkdown(event, textInView);
+        }, last_debounce);
         //check if the config has changed
         let curr_debounce = vscode.workspace
             .getConfiguration('instantmarkdown')
             .get('debounce');
         if (curr_debounce !== last_debounce) {
             last_debounce = curr_debounce;
-            debouncedPush = debounce(function () { self.pushMarkdown(event, textInView); }, last_debounce);
+            debouncedPush = debounce(function () {
+                self.pushMarkdown(event, textInView);
+            }, last_debounce);
         }
         if (started) {
             debouncedPush();
@@ -141,10 +153,10 @@ function InstantMarkdownController(md) {
     md.update();
 }
 function getTextInViewScroll(editor) {
-    if (!editor["visibleRanges"].length) {
+    if (!editor['visibleRanges'].length) {
         return undefined;
     }
-    var view = editor["visibleRanges"][0];
+    var view = editor['visibleRanges'][0];
     var start = view.start;
     var end = view.end;
     var startLine = start.line;
@@ -161,6 +173,10 @@ function getTextInViewCursor(editor) {
     var startCharacter = 0;
     var endCharacter = currentLocation.character;
     var textInView = editor.document.getText(new vscode.Range(startLine, startCharacter, endLine, endCharacter));
+    let nextChar = editor.document.getText(new vscode.Range(endLine, endCharacter + 1, endLine, endCharacter + 2));
+    if (!nextChar) {
+        textInView = textInView.split('\n').slice(0, -1).join('\n');
+    }
     return textInView;
 }
 exports.activate = activate;

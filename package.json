@@ -2,7 +2,7 @@
   "name": "vscode-instant-markdown",
   "displayName": "Instant Markdown",
   "description": "Instant previews of your markdown files as you type.",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "publisher": "dbankier",
   "homepage": "https://github.com/dbankier/vscode-instant-markdown/blob/master/README.md",
   "repository": {
@@ -10,7 +10,7 @@
     "url": "https://github.com/dbankier/vscode-instant-markdown.git"
   },
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.1.37"
   },
   "categories": [
     "Other"
@@ -69,23 +69,23 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "devDependencies": {
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0",
-    "@types/node": "^6.0.40"
+    "typescript": "^4.0.2",
+    "@types/node": "^14.6.2",
+    "vscode": "^1.1.37"
   },
   "dependencies": {
     "debounce": "^1.2.0",
-    "express": "^4.14.1",
-    "github-markdown-css": "^2.4.1",
-    "highlight.js": "^9.9.0",
-    "markdown-it": "^8.2.2",
+    "express": "^4.17.1",
+    "github-markdown-css": "^4.0.0",
+    "highlight.js": "^10.1.2",
+    "markdown-it": "^11.0.0",
     "markdown-it-mathjax": "^2.0.0",
     "markdown-it-mermaid": "^0.2.5",
     "markdown-it-named-headers": "^0.0.4",
-    "markdown-it-plantuml": "^0.3.1",
+    "markdown-it-plantuml": "^1.4.1",
     "markdown-it-sup": "^1.0.0",
-    "markdown-it-task-lists": "^1.4.1",
-    "opn": "^4.0.2",
-    "socket.io": "^1.7.2"
+    "markdown-it-task-lists": "^2.1.1",
+    "opn": "^6.0.0",
+    "socket.io": "^2.3.0"
   }
 }
