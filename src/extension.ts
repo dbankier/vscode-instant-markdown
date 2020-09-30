@@ -142,27 +142,33 @@ function InstantMarkdown() {
 
 function InstantMarkdownController(md) {
   var subscriptions = [];
-  function update() {
+
+  function extensionControl (eventType?, textInView?) {
     var editor = vscode.window.activeTextEditor;
     if (!editor) {
       return;
     }
     var doc = editor.document;
     if (doc.languageId === 'markdown') {
-      md.update();
+      md.update(eventType, textInView);
     } else {
       md.close();
     }
   }
+
+  function activeTextEditorChange(event) {
+    var textInView = getTextInViewScroll(event.textEditor as vscode.TextEditor);
+    extensionControl('scroll', textInView)
+  }
   function scrollUpdate(event) {
     var textInView = getTextInViewScroll(event.textEditor as vscode.TextEditor);
-    md.update('scroll', textInView);
+    extensionControl('scroll', textInView)
   }
   function cursorUpdate(event) {
     var textInView = getTextInViewCursor(event.textEditor as vscode.TextEditor);
-    md.update('cursor', textInView);
+    extensionControl('cursor', textInView)
   }
-  vscode.window.onDidChangeActiveTextEditor(update, this, subscriptions);
+  vscode.window.onDidChangeActiveTextEditor(activeTextEditorChange, this, subscriptions);
   vscode.window.onDidChangeTextEditorSelection(
     cursorUpdate,
     this,
@@ -173,7 +179,8 @@ function InstantMarkdownController(md) {
     this,
     subscriptions
   );
-  md.update();
+
+  extensionControl()
 }
 
 function getTextInViewScroll(editor: vscode.TextEditor) {
