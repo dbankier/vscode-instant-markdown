@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
@@ -127,31 +126,35 @@ function InstantMarkdown() {
 }
 function InstantMarkdownController(md) {
     var subscriptions = [];
-    function update() {
+    function extensionControl(eventType, textInView) {
         var editor = vscode.window.activeTextEditor;
         if (!editor) {
             return;
         }
         var doc = editor.document;
         if (doc.languageId === 'markdown') {
-            md.update();
+            md.update(eventType, textInView);
         }
         else {
             md.close();
         }
     }
+    function activeTextEditorChange(event) {
+        var textInView = getTextInViewScroll(event.textEditor);
+        extensionControl('scroll', textInView);
+    }
     function scrollUpdate(event) {
         var textInView = getTextInViewScroll(event.textEditor);
-        md.update('scroll', textInView);
+        extensionControl('scroll', textInView);
     }
     function cursorUpdate(event) {
         var textInView = getTextInViewCursor(event.textEditor);
-        md.update('cursor', textInView);
+        extensionControl('cursor', textInView);
     }
-    vscode.window.onDidChangeActiveTextEditor(update, this, subscriptions);
+    vscode.window.onDidChangeActiveTextEditor(activeTextEditorChange, this, subscriptions);
     vscode.window.onDidChangeTextEditorSelection(cursorUpdate, this, subscriptions);
     vscode.window.onDidChangeTextEditorVisibleRanges(scrollUpdate, this, subscriptions);
-    md.update();
+    extensionControl();
 }
 function getTextInViewScroll(editor) {
     if (!editor['visibleRanges'].length) {
