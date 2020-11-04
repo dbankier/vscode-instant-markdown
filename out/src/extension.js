@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
@@ -47,6 +48,9 @@ function InstantMarkdown() {
         const scrollEnabled = vscode.workspace
             .getConfiguration('instantmarkdown')
             .get('scroll');
+        const cursorEnabled = vscode.workspace
+            .getConfiguration('instantmarkdown')
+            .get('cursor');
         let md = new MarkdownIt('default', {
             html: true,
             linkify: true,
@@ -67,7 +71,7 @@ function InstantMarkdown() {
                 '<span id="instant-markdown-cursor"></span>\n' +
                 beforeText.substring(position, beforeText.length);
         }
-        else if (event === 'cursor') {
+        else if (event === 'cursor' && cursorEnabled) {
             for (var i = 0; i < beforeText.length; i++) {
                 if (beforeText[i] !== textInView[i]) {
                     var afterText = beforeText.substring(0, i) +
@@ -80,11 +84,14 @@ function InstantMarkdown() {
         else {
             var afterText = beforeText;
         }
+        var plantuml_options = vscode.workspace
+            .getConfiguration('instantmarkdown')
+            .get('plantUMLOptions');
         var new_markdown = md
             .use(require('markdown-it-task-lists'))
             .use(require('markdown-it-sup'))
             .use(require('markdown-it-named-headers'))
-            .use(require('markdown-it-plantuml'))
+            .use(require('markdown-it-plantuml'), plantuml_options)
             .use(require('markdown-it-mathjax')())
             .use(require('markdown-it-mermaid').default)
             .render(afterText);
