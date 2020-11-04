@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
@@ -58,6 +59,5 @@ class Server {
         });
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Server;
 //# sourceMappingURL=server.js.map

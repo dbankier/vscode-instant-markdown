@@ -54,6 +54,16 @@
           "type": "boolean",
           "default": true,
           "description": "Make instant markdown preview scroll with the VS Code window"
+        },
+        "instantmarkdown.cursor": {
+          "type": "boolean",
+          "default": true,
+          "description": "Make instant markdown preview scroll to cursor location"
+        },
+        "instantmarkdown.plantUMLOptions": {
+          "type": "object",
+          "default": {},
+          "description": "Override markdown-it-plantuml options"
         }
       }
     }
