@@ -82,6 +82,6 @@
     "markdown-it-sup": "^1.0.0",
     "markdown-it-task-lists": "^2.1.1",
     "opn": "^6.0.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.4.0"
   }
 }
