@@ -1,6 +1,8 @@
 import * as vscode from 'vscode'
 import * as path from 'path'
-import * as fs from 'fs'
+import * as send from 'send'
+import * as parseUrl from 'parseurl'
+
 interface ServerOption {
     root: string;
     started: () => void
@@ -30,12 +32,7 @@ export default  class Server {
         })
 
         app.get('*', function(req,res) {
-            let file = path.resolve(path.join(options.root, req.url));
-            if (fs.existsSync(file)) {
-                res.sendFile(file)
-            } else {
-                res.status(404).send("Not Found")
-            }
+            send(req, parseUrl(req.url).pathname, { root: options.root }).pipe(res);
         })
 
         this.sockets = {};

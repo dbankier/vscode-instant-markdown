@@ -1,7 +1,9 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = require("vscode");
 const path = require("path");
-const fs = require("fs");
+const send = require("send");
+const parseUrl = require("parseurl");
 class Server {
     constructor(options) {
         const app = require('express')();
@@ -19,13 +21,7 @@ class Server {
             res.sendfile(path.resolve(__dirname, '..', '..', 'node_modules', 'highlight.js', 'styles', 'github.css'));
         });
         app.get('*', function (req, res) {
-            let file = path.resolve(path.join(options.root, req.url));
-            if (fs.existsSync(file)) {
-                res.sendFile(file);
-            }
-            else {
-                res.status(404).send("Not Found");
-            }
+            send(req, parseUrl(req.url).pathname, { root: options.root }).pipe(res);
         });
         this.sockets = {};
         var nextSocketId = 0;
@@ -58,6 +54,5 @@ class Server {
         });
     }
 }
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Server;
 //# sourceMappingURL=server.js.map
