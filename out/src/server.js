@@ -21,7 +21,7 @@ class Server {
             res.sendfile(path.resolve(__dirname, '..', '..', 'node_modules', 'highlight.js', 'styles', 'github.css'));
         });
         app.get('*', function (req, res) {
-            send(req, parseUrl(req.url).pathname, { root: options.root }).pipe(res);
+            send(req, parseUrl(req).pathname, { root: options.root }).pipe(res);
         });
         this.sockets = {};
         var nextSocketId = 0;
