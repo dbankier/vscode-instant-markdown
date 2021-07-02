@@ -32,7 +32,7 @@ export default  class Server {
         })
 
         app.get('*', function(req,res) {
-            send(req, parseUrl(req.url).pathname, { root: options.root }).pipe(res);
+            send(req, parseUrl(req).pathname, { root: options.root }).pipe(res);
         })
 
         this.sockets = {};
