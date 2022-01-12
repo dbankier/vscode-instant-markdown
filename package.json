@@ -78,7 +78,7 @@
     "express": "^4.17.1",
     "github-markdown-css": "^4.0.0",
     "highlight.js": "^10.1.2",
-    "markdown-it": "^11.0.0",
+    "markdown-it": "^12.3.2",
     "markdown-it-mathjax": "^2.0.0",
     "markdown-it-mermaid": "^0.2.5",
     "markdown-it-named-headers": "^0.0.4",
